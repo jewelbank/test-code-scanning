@@ -38,7 +38,7 @@ permissions:
 
 jobs:
   Analysis:
-    runs-on: ubuntu-latest
+    runs-on: java-runner
 
     steps:
       - name: Analyze with SonarQube
