@@ -75,3 +75,14 @@ jobs:
       uses: github/codeql-action/analyze@v2
       with:
         category: "/language:${{matrix.language}}"
+        
+    - name: Delay before sending alerts
+      uses: webdevops/sleep@1.2.0
+      with:
+          sleep: '20s'  # Adjust the delay as necessary
+
+    - name: Send CodeQL alerts to Slack
+      env:
+          SLACK_WEBHOOK_URL: "https://hooks.slack.com/services/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"
+      run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"CodeQL analysis completed. Check the results at <CodeQL results URL>."}' $SLACK_WEBHOOK_URL
