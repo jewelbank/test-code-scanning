@@ -1,0 +1,51 @@
+name: Slack Code Scanning Alerts
+
+on:
+  code_scanning_alert:
+    types:
+      - created
+      - reopened
+      - closed
+
+jobs:
+  send_alert:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Send Slack notification
+        uses: slackapi/slack-github-action@v2
+        env:
+          SLACK_WEBHOOK_URL: "https://hooks.slack.com/services/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"
+        with:
+          args: |
+            payload {
+              "channel": "github-advancedsecurity-test",
+              "username": "GitHub Code Scanning",
+              "text": "Code scanning alert: ${{ github.event.alert.title }}",
+              "attachments": [
+                {
+                  "title": "Alert Details",
+                  "fields": [
+                    {
+                      "title": "Repository",
+                      "value": "${{ github.repository }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Alert Level",
+                      "value": "${{ github.event.alert.rule.severity }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Alert Message",
+                      "value": "${{ github.event.alert.message }}",
+                      "short": false
+                    }
+                  ],
+                  "color": "#FF0000"
+                }
+              ]
+            }
