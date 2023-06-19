@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Send Slack notification
-        uses: slackapi/slack-github-action@v2
+        uses: slackapi/slack-github-action@v3
         env:
           SLACK_WEBHOOK_URL: "https://hooks.slack.com/services/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"
         with:
